@@ -54,18 +54,27 @@
     return card;
   }
 
+  // render는 '화면에 그린다'는 뜻이다. 이 함수는 API 요청을 보내지 않는다.
+  // projectState에 이미 저장된 값을 읽고 프로젝트 영역의 HTML을 다시 만든다.
   function renderProjects() {
+    // 객체에서 필요한 값을 꺼낸다. status는 아래에서 읽기 쉽게 phase라는 이름으로 부른다.
     const { status: phase, items, filter, error } = projectState;
+    // items의 언어들을 모아 필터 버튼 이름을 만든다. Set은 중복 언어를 한 번만 남긴다.
     const languages = ['전체', ...new Set(items.map((repo) => repo.language || '기타'))];
+    // '전체'면 모든 저장소를, 특정 언어를 골랐으면 조건에 맞는 저장소만 보여 준다.
     const visible = filter === '전체'
       ? items
       : items.filter((repo) => (repo.language || '기타') === filter);
 
+    // 이전에 그려 둔 버튼·카드·상태 문구를 지우고 현재 상태에 맞게 다시 채운다.
+    // map(createFilter)은 언어 이름 각각을 버튼 요소로 바꾼다.
     filters.replaceChildren(...languages.map(createFilter));
     grid.replaceChildren();
     status.replaceChildren();
+    // 성공 상태이거나 저장된 목록이 있으면, 현재 필터에서 보이는 카드 수를 표시한다.
     count.textContent = (phase === 'success' || items.length) ? `${visible.length}개 프로젝트` : '';
 
+    // 아래 if들은 상태별 화면의 갈림길이다. return은 현재 함수 실행을 여기서 끝낸다.
     if (phase === 'loading') {
       // 개발자가 직접 작성한 고정 마크업에만 innerHTML을 사용한다.
       // GitHub API 값은 createCard()에서 textContent로 출력한다.
@@ -73,6 +82,7 @@
       return;
     }
     if (phase === 'error') {
+      // 오류 문구와 '다시 시도' 버튼을 만든다. 버튼을 누르면 loadProjects()가 재실행된다.
       const message = document.createElement('p');
       message.textContent = error;
       const retry = document.createElement('button');
@@ -81,18 +91,22 @@
       retry.textContent = '다시 시도';
       retry.addEventListener('click', loadProjects);
       status.append(message, retry);
+      // 실시간 API는 실패했어도 저장해 둔 목록이 있다면 카드를 함께 보여 준다.
       if (visible.length) grid.replaceChildren(...visible.map(createCard));
       return;
     }
     if (phase === 'empty') {
+      // API 요청은 성공했지만 저장소 배열에 항목이 없는 경우다.
       status.textContent = '표시할 프로젝트가 없습니다.';
       return;
     }
     if (phase === 'success' && visible.length === 0) {
+      // 저장소는 있지만 선택한 언어에 맞는 저장소가 없는 경우다.
       status.textContent = '이 언어에 해당하는 프로젝트가 없습니다.';
       return;
     }
     if (phase === 'success') {
+      // map(createCard)은 저장소 데이터 각각을 화면에 넣을 카드 요소로 바꾼다.
       grid.replaceChildren(...visible.map(createCard));
     }
   }
