@@ -86,24 +86,33 @@ test('빈 응답은 카드 대신 빈 상태를 보여준다', async () => {
 });
 
 test('403 응답은 오류와 재시도 버튼을 보여주고 재요청할 수 있다', async () => {
-  let calls = 0;
-  const { elements, state } = await runWith(async () => {
-    calls += 1;
-    return calls === 1
+  let apiCalls = 0;
+  const { elements, state } = await runWith(async (url) => {
+    if (url === 'data/repos.json') return { ok: true, json: async () => [repo('saved', 'JavaScript'), repo('saved-two', 'CSS')] };
+    apiCalls += 1;
+    return apiCalls === 1
       ? { ok: false, status: 403 }
       : { ok: true, json: async () => [repo('recovered', 'CSS')] };
   });
   assert.equal(state.projects.status, 'error');
-  assert.match(elements['#project-status'].children[0].textContent, /프로젝트를 불러올 수 없습니다/);
+  assert.match(elements['#project-status'].children[0].textContent, /마지막 배포에서 저장한 프로젝트/);
+  assert.equal(elements['#project-grid'].children.length, 2);
+  const cssButton = elements['#project-filters'].children.find((button) => button.textContent === 'CSS');
+  cssButton.click();
+  assert.equal(elements['#project-grid'].children.length, 1);
   elements['#project-status'].children[1].click();
   await new Promise(setImmediate);
-  assert.equal(calls, 2);
+  assert.equal(apiCalls, 2);
   assert.equal(state.projects.status, 'success');
   assert.equal(elements['#project-grid'].children.length, 1);
 });
 
 test('네트워크 실패는 오류 상태로 이동한다', async () => {
-  const { elements, state } = await runWith(async () => { throw new Error('offline'); });
+  const { elements, state } = await runWith(async (url) => {
+    if (url === 'data/repos.json') return { ok: false, status: 404 };
+    throw new Error('offline');
+  });
   assert.equal(state.projects.status, 'error');
   assert.match(elements['#project-status'].children[0].textContent, /네트워크 상태/);
+  assert.equal(elements['#project-grid'].children.length, 0);
 });

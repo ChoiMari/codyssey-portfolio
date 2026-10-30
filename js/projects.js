@@ -64,7 +64,7 @@
     filters.replaceChildren(...languages.map(createFilter));
     grid.replaceChildren();
     status.replaceChildren();
-    count.textContent = phase === 'success' ? `${visible.length}개 프로젝트` : '';
+    count.textContent = (phase === 'success' || items.length) ? `${visible.length}개 프로젝트` : '';
 
     if (phase === 'loading') {
       // 개발자가 직접 작성한 고정 마크업에만 innerHTML을 사용한다.
@@ -81,6 +81,7 @@
       retry.textContent = '다시 시도';
       retry.addEventListener('click', loadProjects);
       status.append(message, retry);
+      if (visible.length) grid.replaceChildren(...visible.map(createCard));
       return;
     }
     if (phase === 'empty') {
@@ -123,6 +124,19 @@
       projectState.error = error instanceof Error && error.message.startsWith('프로젝트를 불러올 수 없습니다.')
         ? error.message
         : '프로젝트를 불러올 수 없습니다. 네트워크 상태를 확인한 뒤 다시 시도해 주세요.';
+      // GitHub Pages에는 배포 시 GitHub API에서 받아 둔 공개 저장소 목록을 함께 싣는다.
+      // 인증 없는 브라우저 요청이 제한되어도 마지막 목록과 오류·재시도를 함께 보여준다.
+      try {
+        const snapshot = await fetch('data/repos.json');
+        if (!snapshot.ok) throw new Error('저장된 목록을 읽을 수 없습니다.');
+        const cachedRepos = await snapshot.json();
+        if (!Array.isArray(cachedRepos)) throw new Error('저장된 목록의 형식이 올바르지 않습니다.');
+        projectState.items = cachedRepos;
+        projectState.filter = '전체';
+        projectState.error += ' 마지막 배포에서 저장한 프로젝트를 표시합니다.';
+      } catch {
+        projectState.items = [];
+      }
     }
     renderProjects();
   }

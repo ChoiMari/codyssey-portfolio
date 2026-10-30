@@ -1,0 +1,170 @@
+[
+  {
+    "name": "codyssey-portfolio",
+    "html_url": "https://github.com/ChoiMari/codyssey-portfolio",
+    "description": null,
+    "language": "CSS",
+    "stargazers_count": 0
+  },
+  {
+    "name": "codyssey-sql-database",
+    "html_url": "https://github.com/ChoiMari/codyssey-sql-database",
+    "description": "SQL and relational database modeling practice",
+    "language": "Shell",
+    "stargazers_count": 1
+  },
+  {
+    "name": "dev-job",
+    "html_url": "https://github.com/ChoiMari/dev-job",
+    "description": null,
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "python-study",
+    "html_url": "https://github.com/ChoiMari/python-study",
+    "description": "📖 파이썬 학습 기록 저장소입니다.",
+    "language": "Python",
+    "stargazers_count": 0
+  },
+  {
+    "name": "docker-workstation",
+    "html_url": "https://github.com/ChoiMari/docker-workstation",
+    "description": "내 컴퓨터에 개발자용 '작업실' 꾸미기 미션",
+    "language": "Dockerfile",
+    "stargazers_count": 0
+  },
+  {
+    "name": "coding-test-practice",
+    "html_url": "https://github.com/ChoiMari/coding-test-practice",
+    "description": "This is an auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).",
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "ai-nlp-study",
+    "html_url": "https://github.com/ChoiMari/ai-nlp-study",
+    "description": "numpy, pandas, TensorFlow/Keras, Linear Regression, Multiple Linear Regression, Logistic Regression, Gradient Descent,RNN/LSTM, Seq2Seq, Transformer 학습 기록 저장소입니다.",
+    "language": "Jupyter Notebook",
+    "stargazers_count": 0
+  },
+  {
+    "name": "flutter-study",
+    "html_url": "https://github.com/ChoiMari/flutter-study",
+    "description": "Flutter & Dart를 공부하며 작성한 실습 및 복습 코드 기반 학습 저장소입니다",
+    "language": "Dart",
+    "stargazers_count": 0
+  },
+  {
+    "name": "ChoiMari",
+    "html_url": "https://github.com/ChoiMari/ChoiMari",
+    "description": null,
+    "language": null,
+    "stargazers_count": 0
+  },
+  {
+    "name": "spring-study",
+    "html_url": "https://github.com/ChoiMari/spring-study",
+    "description": "Spring을 학습합니다.",
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "react-study",
+    "html_url": "https://github.com/ChoiMari/react-study",
+    "description": "React를 학습합니다",
+    "language": "JavaScript",
+    "stargazers_count": 0
+  },
+  {
+    "name": "my-app",
+    "html_url": "https://github.com/ChoiMari/my-app",
+    "description": "깃허브 액션 실습 예제 ",
+    "language": "CSS",
+    "stargazers_count": 0
+  },
+  {
+    "name": "web-basic",
+    "html_url": "https://github.com/ChoiMari/web-basic",
+    "description": "Starter projects for front-end beginners",
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "java-study-refresh",
+    "html_url": "https://github.com/ChoiMari/java-study-refresh",
+    "description": "자바 공부",
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "moo-money",
+    "html_url": "https://github.com/ChoiMari/moo-money",
+    "description": "한눈에지출(MooMoney)은 사용자가 지출을 등록하고, 한눈에 분석할 수 있는 친근한 지출 관리 프로그램입니다.",
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "fresh-box",
+    "html_url": "https://github.com/ChoiMari/fresh-box",
+    "description": "WPF 기반 공장의 자동화를 위한 식품 유통 관리 및 사원 관리 프로그램입니다.",
+    "language": "C#",
+    "stargazers_count": 0
+  },
+  {
+    "name": "c-study",
+    "html_url": "https://github.com/ChoiMari/c-study",
+    "description": "Study and practice C programming.",
+    "language": "C",
+    "stargazers_count": 0
+  },
+  {
+    "name": "wpf-study",
+    "html_url": "https://github.com/ChoiMari/wpf-study",
+    "description": "Personal study log for learning Windows Presentation Foundation (WPF)",
+    "language": "C#",
+    "stargazers_count": 0
+  },
+  {
+    "name": "cs-study",
+    "html_url": "https://github.com/ChoiMari/cs-study",
+    "description": "A repository for learning C#.",
+    "language": "C#",
+    "stargazers_count": 0
+  },
+  {
+    "name": "wincalc-pro",
+    "html_url": "https://github.com/ChoiMari/wincalc-pro",
+    "description": "Mini project) A Windows Calculator clone built with C# and Windows Forms by a 2-member team ",
+    "language": "C#",
+    "stargazers_count": 0
+  },
+  {
+    "name": "cpp-study",
+    "html_url": "https://github.com/ChoiMari/cpp-study",
+    "description": "It is a space where materials organized while studying C++ are collected.",
+    "language": "C++",
+    "stargazers_count": 0
+  },
+  {
+    "name": "study-web-springboot",
+    "html_url": "https://github.com/ChoiMari/study-web-springboot",
+    "description": null,
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "study-web",
+    "html_url": "https://github.com/ChoiMari/study-web",
+    "description": "study-web",
+    "language": "Java",
+    "stargazers_count": 0
+  },
+  {
+    "name": "javahakwon",
+    "html_url": "https://github.com/ChoiMari/javahakwon",
+    "description": null,
+    "language": "Java",
+    "stargazers_count": 0
+  }
+]

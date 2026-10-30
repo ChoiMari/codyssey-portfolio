@@ -8,7 +8,7 @@
 - **CSS**는 그 콘텐츠의 모양과 배치를 정한다. 화면 크기와 테마에 따라 다른 규칙을 적용할 수 있다.
 - **JavaScript**는 클릭·입력·네트워크 응답을 받아 데이터를 바꾸고, 그 결과를 화면에 반영한다. 이 문서에서 말하는 **상태**는 지금 화면을 결정하는 값이다. **렌더링**은 그 값을 실제 DOM·속성·클래스로 표현하는 과정이다.
 
-> 시연 환경: 최신 Chrome, 로컬 웹 서버 또는 GitHub Pages. GitHub API는 네트워크 및 공개 API 호출 제한의 영향을 받으므로 실패 시 오류 상태와 재시도 동작을 확인한다. 폼은 실제 메시지 전송이 아닌 입력 검증 데모다.
+> 시연 환경: 최신 Chrome, 로컬 웹 서버 또는 GitHub Pages. GitHub API는 네트워크 및 공개 API 호출 제한의 영향을 받으므로 실패 시 오류·재시도와 배포 시 저장한 목록을 확인한다. 폼은 실제 메시지 전송이 아닌 입력 검증 데모다.
 
 ## 항목 1 — 실제 동작
 
@@ -48,13 +48,13 @@
 <a id="item-1-4"></a>
 ### 1-4. GitHub API 데이터와 로딩·오류·빈 상태가 구분되는가?
 
-- **확인·판정:** 정상 네트워크에서 Projects의 로딩 문구가 카드로 바뀌는지 본다. 개발자 도구의 네트워크 차단으로 오류와 재시도 버튼을 확인한다. 빈 데이터는 빈 응답을 모의하거나 해당 상태를 호출해 확인한다. 판정: □ PASS □ FAIL / 실제 결과: __________
+- **확인·판정:** 정상 네트워크에서 Projects의 로딩 문구가 카드로 바뀌는지 본다. GitHub API 403을 모의해 오류·재시도 버튼과 저장 목록의 카드가 함께 나오는지 확인한다. 빈 데이터는 빈 응답을 모의해 확인한다. 판정: □ PASS □ FAIL / 실제 결과: __________
 - **입문:** API는 다른 서비스의 데이터를 정해진 주소로 요청하는 창구다. `fetch()`는 요청이 끝나기를 기다리는 비동기 작업이다. 기다리는 동안에는 로딩을, 실패하면 오류를, 성공했지만 항목이 없으면 빈 상태를 보여줘야 사용자가 상황을 이해한다.
-- **숙련:** 요청 시작 → `loading`; 응답과 JSON 변환 → `success` 또는 `empty`; 네트워크 오류나 비정상 HTTP 응답 → `error` 순서로 상태를 바꾼다. 매 상태 변경 후 프로젝트 렌더 함수가 상태 문구·카드·재시도 버튼을 갱신한다.
-- **고급(실무):** `fetch()`는 403·404 같은 HTTP 실패에서 자동으로 `catch`로 가지 않으므로 `response.ok`를 확인해야 한다. 응답 데이터가 배열인지 검증하고, 요청 제한이나 일시적 실패 때는 재시도를 제공한다. 사용자 입력이나 API 문자열을 무분별하게 `innerHTML`로 넣으면 XSS 위험이 있으므로 안전한 DOM 생성 또는 이스케이프가 필요하다.
-- **코드 근거:** `js/projects.js`의 요청·상태·렌더 함수, `index.html`의 `#project-status`·`#project-grid`. 발췌 모음 D.
-- **말로 설명하기:** “API를 기다리는 동안 로딩, 정상 데이터는 카드, 빈 배열은 빈 상태, 실패 응답은 오류와 재시도 버튼으로 분리합니다. `response.ok`로 403도 오류로 처리합니다.”
-- **추가 질문:** “403은 `catch`가 잡나요?” → `fetch`의 응답 자체는 성공적으로 도착할 수 있으므로 `response.ok` 검사 뒤 직접 오류로 전환해야 한다.
+- **숙련:** 요청 시작 → `loading`; 응답과 JSON 변환 → `success` 또는 `empty`; 네트워크 오류나 비정상 HTTP 응답 → `error` 순서로 상태를 바꾼다. 오류 때는 `data/repos.json`을 추가로 읽어 저장된 카드도 표시한다. 매 상태 변경 후 렌더 함수가 문구·카드·재시도 버튼을 갱신한다.
+- **고급(실무):** `fetch()`는 403·404 같은 HTTP 실패에서 자동으로 `catch`로 가지 않으므로 `response.ok`를 확인해야 한다. GitHub의 비인증 한도는 출발지 IP 기준이라 본인의 호출이 60회 미만이어도 403이 가능하다. 배포에서 인증된 요청으로 저장 목록을 갱신하지만 화면의 저장 목록은 배포 시점 데이터다. API 문자열은 `textContent`로 안전하게 출력한다.
+- **코드 근거:** `js/projects.js`의 요청·상태·렌더 함수, `scripts/snapshot-repos.cjs`, `.github/workflows/pages.yml`, `index.html`의 `#project-status`·`#project-grid`. 발췌 모음 D.
+- **말로 설명하기:** “API를 기다리는 동안 로딩, 정상 데이터는 카드, 빈 배열은 빈 상태로 표시합니다. 403이면 오류와 재시도 버튼을 보여 주면서 마지막 배포 목록의 카드도 표시합니다.”
+- **추가 질문:** “내가 60회 호출하지 않았는데 왜 403인가요?” → 비인증 한도는 사용자 계정이 아니라 출발지 IP 단위라 같은 IP의 다른 요청과 합산된다. “403은 `catch`가 잡나요?” → `fetch`의 응답 자체는 도착하므로 `response.ok` 검사 뒤 직접 오류로 전환한다.
 
 <a id="item-1-5"></a>
 ### 1-5. 필수값과 이메일 오류를 즉시 표시하는가?
@@ -153,10 +153,10 @@
 
 - **확인·판정:** 정상 요청과 네트워크 차단 또는 403 모의 응답을 비교한다. `await`, `response.ok`, `catch` 위치와 UI 변화를 설명한다. 판정: □ PASS □ FAIL / 실제 결과: __________
 - **입문:** 네트워크 응답은 바로 오지 않는다. `async` 함수 안의 `await`는 그 비동기 결과를 기다려 다음 줄에서 사용할 수 있게 한다. `try/catch`는 도중에 생긴 예외를 잡아 오류 안내로 바꾼다.
-- **숙련:** 요청 전에 로딩 상태로 렌더한다. `await fetch()` 뒤 `response.ok`를 검사하고, 성공 응답만 `await response.json()`으로 읽는다. 배열이 비었으면 빈 상태, 있으면 성공 상태로 카드 렌더를 한다. 요청 실패·HTTP 실패·JSON 파싱 실패는 `catch`에서 오류 상태로 전환한다.
-- **고급(실무):** `async`는 함수를 멈춘 듯 보이게 작성할 뿐 브라우저 전체를 멈추지 않는다. 공개 API의 호출 제한을 피하려 불필요한 반복 요청을 줄인다. 실패 이유를 개발자 로그와 사용자 메시지로 분리하고, 사용자에게는 재시도 경로를 제공한다. 서로 겹치는 요청이 있을 경우 오래된 응답이 최신 상태를 덮지 않게 설계해야 한다.
+- **숙련:** 요청 전에 로딩 상태로 렌더한다. `await fetch()` 뒤 `response.ok`를 검사하고, 성공 응답만 `await response.json()`으로 읽는다. 배열이 비었으면 빈 상태, 있으면 성공 상태다. 요청 실패·HTTP 실패·JSON 파싱 실패는 `catch`에서 오류 상태로 전환하고 저장 목록을 별도로 읽는다.
+- **고급(실무):** `async`는 브라우저 전체를 멈추지 않는다. 저장 목록 조회도 실패하면 오류와 재시도만 남긴다. 배포 스크립트는 인증 토큰을 환경 변수로 받아 공개 데이터만 JSON으로 저장하며, 토큰을 사이트 파일에 넣지 않는다. 저장 목록의 갱신 주기는 배포 주기와 같다.
 - **코드 근거:** `js/projects.js`의 API 함수와 상태 렌더. 발췌 모음 D.
-- **말로 설명하기:** “`await`로 응답과 JSON을 순서대로 받고, `response.ok`로 403 같은 HTTP 오류를 직접 검사합니다. 예외는 `catch`에서 오류 상태로 바꾸고 재시도를 보여줍니다.”
+- **말로 설명하기:** “`await`로 응답과 JSON을 순서대로 받고, `response.ok`로 403을 직접 검사합니다. `catch`에서는 오류와 재시도를 표시하고 배포에서 저장한 공개 목록을 추가로 불러옵니다.”
 - **추가 질문:** “빈 배열은 실패인가요?” → 요청은 성공한 것이므로 오류가 아니라 별도의 빈 상태다.
 
 <a id="item-3-3"></a>
@@ -294,17 +294,29 @@ try {
   const data = await response.json();
   if (!Array.isArray(data)) throw new Error('프로젝트를 불러올 수 없습니다. GitHub 응답 형식이 올바르지 않습니다.');
   projectState.items = data;
+  projectState.filter = '전체';
   projectState.status = projectState.items.length ? 'success' : 'empty';
 } catch (error) {
   projectState.status = 'error';
   projectState.error = error instanceof Error && error.message.startsWith('프로젝트를 불러올 수 없습니다.')
     ? error.message
     : '프로젝트를 불러올 수 없습니다. 네트워크 상태를 확인한 뒤 다시 시도해 주세요.';
+  try {
+    const snapshot = await fetch('data/repos.json');
+    if (!snapshot.ok) throw new Error('저장된 목록을 읽을 수 없습니다.');
+    const cachedRepos = await snapshot.json();
+    if (!Array.isArray(cachedRepos)) throw new Error('저장된 목록의 형식이 올바르지 않습니다.');
+    projectState.items = cachedRepos;
+    projectState.filter = '전체';
+    projectState.error += ' 마지막 배포에서 저장한 프로젝트를 표시합니다.';
+  } catch {
+    projectState.items = [];
+  }
 }
 renderProjects();
 ```
 
-이 발췌는 `loadProjects()`의 관련 줄을 순서대로 모은 것이다. `renderProjects()`는 `loading`에 스피너, `error`에 메시지·재시도 버튼, `empty`에 빈 문구, `success`에 카드를 표시한다.
+이 발췌는 `loadProjects()`에서 주석을 뺀 실제 코드다. 첫 `fetch`가 라이브 GitHub 데이터이고 두 번째 `fetch`가 배포에 포함된 JSON이다. `renderProjects()`는 `loading`에 스피너, `error`에 메시지·재시도 버튼과 저장 카드, `empty`에 빈 문구, `success`에 라이브 카드를 표시한다. 저장 목록이 없으면 오류 메시지와 재시도만 보인다. `.github/workflows/pages.yml`은 배포 전에 `GITHUB_TOKEN`을 전달해 `node scripts/snapshot-repos.cjs`를 실행한다. 스크립트는 `name`, `html_url`, `description`, `language`, `stargazers_count`만 `data/repos.json`에 저장하며 토큰은 기록하지 않는다.
 
 ### E. 폼 입력과 제출 (`js/contact.js`)
 
@@ -399,9 +411,9 @@ const STATE = {
 | 테마 전환 후 새로고침 | 버튼 클릭 → 새로고침 | 로컬 브라우저에서 테마 유지 관찰 | □ PASS □ FAIL |
 | 메뉴·스크롤·맨 위 버튼 | 모바일 메뉴와 페이지 스크롤 | __________ | □ PASS □ FAIL |
 | GitHub 로딩·성공 | 정상 네트워크와 `node --test tests/projects.test.cjs` | 로딩·성공 경로는 모의 응답 테스트 통과. 실제 GitHub 정상 응답은 호출 제한 해제 후 확인 필요 | □ PASS □ FAIL |
-| GitHub 오류·재시도 | 403과 응답 복구 모의 | 실제 GitHub 403 오류 UI 관찰. 403 뒤 재시도 복구는 모의 응답 테스트 통과 | □ PASS □ FAIL |
+| GitHub 오류·저장 목록·재시도 | 403과 응답 복구 모의 | 403 시 저장 목록 카드와 오류·재시도, 재시도 복구는 모의 응답 테스트 통과. 배포 URL에서 별도 확인 | □ PASS □ FAIL |
 | GitHub 빈 응답 | `node --test tests/projects.test.cjs` | 빈 배열 상태 모의 응답 테스트 통과 | □ PASS □ FAIL |
-| 언어 필터 | 전체·특정 언어 선택 모의 | 언어별 필터와 카드 수 변경 모의 응답 테스트 통과. 실제 GitHub 정상 응답은 별도 확인 필요 | □ PASS □ FAIL |
+| 언어 필터 | 전체·특정 언어 선택 모의 | 라이브 목록과 저장 목록의 필터·카드 수 변경 모의 응답 테스트 통과. 배포 URL에서 별도 확인 | □ PASS □ FAIL |
 | 폼 오류·정상 입력 | 빈 값·이메일 오류·정상 값 | 로컬 브라우저에서 세 경우의 메시지 관찰 | □ PASS □ FAIL |
 
 체크란은 실제 브라우저에서 확인한 사람만 채운다. 코드 읽기만으로 PASS를 주장하지 않는다.

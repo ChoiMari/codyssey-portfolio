@@ -1,10 +1,10 @@
 # Mari Portfolio
 
-HTML, CSS, JavaScript만으로 만든 반응형 자기소개 웹페이지입니다. `ChoiMari`의 공개 GitHub 저장소를 API로 불러와 프로젝트 카드와 언어별 필터를 표시합니다.
+HTML, CSS, JavaScript만으로 만든 반응형 자기소개 웹페이지입니다. `ChoiMari`의 공개 GitHub 저장소를 API로 불러와 프로젝트 카드와 언어별 필터를 표시합니다. 브라우저 API 요청이 제한되면 마지막 배포에서 저장한 목록을 보여줍니다.
 
 ## 실행 방법
 
-VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `python -m http.server 8000`을 실행한 뒤 `http://localhost:8000`에 접속합니다. 외부 라이브러리나 빌드 과정은 필요하지 않습니다.
+VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `python -m http.server 8000`을 실행한 뒤 `http://localhost:8000`에 접속합니다. 외부 라이브러리는 필요하지 않습니다. 배포 시에는 GitHub Actions가 공개 저장소 목록을 새로 저장합니다.
 
 ## 사용 기술과 파일 역할
 
@@ -13,6 +13,8 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 - `js/state.js`: 테마·메뉴·프로젝트·폼 상태 객체
 - `js/ui.js`: 테마, 햄버거 메뉴, 스크롤 UI와 애니메이션
 - `js/projects.js`: GitHub API 호출, 네 가지 요청 상태, 언어 필터와 카드 렌더링
+- `data/repos.json`: 브라우저 API 요청 실패 시 보여줄 마지막 공개 저장소 목록
+- `scripts/snapshot-repos.cjs`: GitHub Pages 배포 시 인증된 요청으로 목록 갱신
 - `js/contact.js`: 입력·제출 유효성 검사와 피드백
 - `images/profile.svg`: 실제 사진이 아닌 CM 이니셜 일러스트
 
@@ -24,7 +26,7 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 - 스크롤 `60px`부터 헤더 배경 변경, `300px`부터 맨 위 버튼 표시
 - `IntersectionObserver` 임계값 `0.2`에서 섹션 표시
 - 다크 모드는 `localStorage`의 `portfolio-theme`에 저장
-- GitHub 공개 API는 인증 없이 호출하므로 호출 제한이나 네트워크 오류 시 오류 메시지와 재시도 버튼을 표시
+- 브라우저의 GitHub 공개 API는 인증 없이 호출하므로 호출 제한이나 네트워크 오류 시 오류 메시지·재시도 버튼과 마지막 배포 목록을 함께 표시
 - 문의 폼은 유효성 검사 데모이며 메시지를 실제로 전송하지 않음
 
 ## 평가항목별 설명 목차
@@ -39,7 +41,7 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 | 4. 설계 설명 | [4-1 STATE 객체](docs/evaluation-guide.md#item-4-1) · [4-2 모바일 우선](docs/evaluation-guide.md#item-4-2) |
 | 5. 보너스 | [언어별 프로젝트 필터](docs/evaluation-guide.md#item-5) |
 
-프로젝트 상태 로직은 `node --test tests/projects.test.cjs`로 로딩·성공·빈 데이터·403 후 재시도·네트워크 실패를 모의 검증할 수 있습니다.
+프로젝트 상태 로직은 `node --test tests/projects.test.cjs`로 로딩·성공·빈 데이터·403 시 저장 목록과 재시도·저장 목록마저 없는 네트워크 실패를 모의 검증할 수 있습니다.
 
 ## 제출용 스크린샷
 
@@ -61,4 +63,4 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 - GitHub Pages: https://choimari.github.io/codyssey-portfolio/
 - 스크린샷: 위의 세 이미지 및 [원본 파일](screenshots/)
 
-공개 GitHub 프로필 페이지에서 `Mari`라는 표시 이름과 Java·C# 학습 저장소를 확인해 소개에 반영했습니다. 공개 API는 확인 시점에 호출 제한(403)이어서 오류 UI가 표시됐습니다. 프로필 이미지는 실제 사진이 아닌 이니셜 일러스트이며, 공개 이메일 주소는 사이트에 옮기지 않았습니다.
+공개 GitHub 프로필 페이지에서 `Mari`라는 표시 이름과 Java·C# 학습 저장소를 확인해 소개에 반영했습니다. 브라우저 API의 403 제한은 접속 IP 전체에 적용될 수 있어, 배포에서 갱신한 공개 목록을 대체 데이터로 사용합니다. 저장 목록은 배포 시점의 데이터이므로 실시간 응답과 다를 수 있습니다. 프로필 이미지는 실제 사진이 아닌 이니셜 일러스트이며, 공개 이메일 주소는 사이트에 옮기지 않았습니다.
