@@ -58,7 +58,7 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 ## 배포 및 제출
 
 - GitHub 저장소: https://github.com/ChoiMari/codyssey-portfolio
-- GitHub Pages: 배포 확인 후 URL 기입
+- GitHub Pages: https://choimari.github.io/codyssey-portfolio/
 - 스크린샷: 위의 세 이미지 및 [원본 파일](screenshots/)
 
 공개 GitHub 프로필 페이지에서 `Mari`라는 표시 이름과 Java·C# 학습 저장소를 확인해 소개에 반영했습니다. 공개 API는 확인 시점에 호출 제한(403)이어서 오류 UI가 표시됐습니다. 프로필 이미지는 실제 사진이 아닌 이니셜 일러스트이며, 공개 이메일 주소는 사이트에 옮기지 않았습니다.
