@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 540" role="img" aria-labelledby="title">
+  <title id="title">CM 이니셜 일러스트</title>
+  <rect width="480" height="540" fill="#d9e5e1"/>
+  <circle cx="240" cy="242" r="174" fill="#b7d0c5"/>
+  <circle cx="240" cy="242" r="132" fill="#0d302d"/>
+  <path d="M42 445c100-88 248-88 396 0v95H42z" fill="#315c50"/>
+  <text x="240" y="271" fill="#e9f0da" font-family="Arial,sans-serif" font-size="102" font-weight="700" letter-spacing="-10" text-anchor="middle">CM.</text>
+  <path d="M50 50h80M50 50v80M430 490h-80M430 490v-80" fill="none" stroke="#315c50" stroke-width="5"/>
+</svg>
