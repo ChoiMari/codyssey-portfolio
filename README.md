@@ -57,10 +57,14 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 
 ![모바일 다크 모드 포트폴리오 첫 화면](screenshots/dark.jpg)
 
+### 문의 폼 · 제출 성공
+
+![문의 폼 제출 성공 메시지](screenshots/contact-success.png)
+
 ## 배포 및 제출
 
 - GitHub 저장소: https://github.com/ChoiMari/codyssey-portfolio
 - GitHub Pages: https://choimari.github.io/codyssey-portfolio/
-- 스크린샷: 위의 세 이미지 및 [원본 파일](screenshots/)
+- 스크린샷: 위의 네 이미지 및 [원본 파일](screenshots/)
 
 공개 GitHub 프로필 페이지에서 `Mari`라는 표시 이름과 Java·C# 학습 저장소를 확인해 소개에 반영했습니다. 브라우저 API의 403 제한은 접속 IP 전체에 적용될 수 있어, 배포에서 갱신한 공개 목록을 대체 데이터로 사용합니다. 저장 목록은 배포 시점의 데이터이므로 실시간 응답과 다를 수 있습니다. 프로필 이미지는 실제 사진이 아닌 이니셜 일러스트이며, 공개 이메일 주소는 사이트에 옮기지 않았습니다.
