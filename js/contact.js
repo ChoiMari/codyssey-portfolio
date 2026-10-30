@@ -22,8 +22,9 @@
       field.input.classList.toggle('invalid', Boolean(message));
     });
     feedback.textContent = STATE.form.submitted
-      ? '입력 내용을 확인했습니다. 이 데모 폼은 메시지를 실제로 전송하지 않습니다.'
+      ? '제출 성공! 입력 내용을 확인했습니다. 이 데모 폼은 메시지를 실제로 전송하지 않습니다.'
       : '';
+    feedback.classList.toggle('is-success', STATE.form.submitted);
   };
 
   Object.entries(fields).forEach(([key, field]) => {

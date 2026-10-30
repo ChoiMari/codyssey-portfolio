@@ -59,9 +59,9 @@
 <a id="item-1-5"></a>
 ### 1-5. 필수값과 이메일 오류를 즉시 표시하는가?
 
-- **확인·판정:** 이름·이메일·메시지를 비우고 제출한다. 잘못된 이메일을 입력하고 필드 근처의 오류를 본다. 올바른 값을 입력하면 오류가 사라지고 제출 시 안내 메시지가 보이면 통과한다. 판정: □ PASS □ FAIL / 실제 결과: __________
+- **확인·판정:** 이름·이메일·메시지를 비우고 제출한다. 잘못된 이메일을 입력하고 필드 근처의 오류를 본다. 올바른 값을 입력하고 제출하면 페이지 이동 없이 초록색 “제출 성공!” 메시지가 보이는지 확인한다. 판정: □ PASS □ FAIL / 실제 결과: __________
 - **입문:** 유효성 검사는 입력이 목적에 맞는지 확인하는 일이다. `required`는 필수값의 의미를 주고, `label for`와 입력의 `id`가 같으면 제목과 입력이 연결된다. 입력 오류는 해당 필드 바로 아래에 있어야 어떤 값을 고쳐야 하는지 알기 쉽다.
-- **숙련:** `input` 이벤트마다 입력 상태를 검사하고 필드별 오류 메시지를 렌더링한다. `submit` 이벤트에서는 `preventDefault()`로 페이지 이동을 막고 전체 필드를 다시 검사한다. 모두 유효하면 데모의 성공 안내를 표시한다.
+- **숙련:** `input` 이벤트마다 입력 상태를 검사하고 필드별 오류 메시지를 렌더링한다. `submit` 이벤트에서는 `preventDefault()`로 페이지 이동을 막고 전체 필드를 다시 검사한다. 모두 유효하면 `STATE.form.submitted`가 `true`가 되고, `renderForm()`이 “제출 성공!” 문구와 초록색 성공 스타일을 표시한다.
 - **고급(실무):** 이메일 정규식은 형식의 기본 확인일 뿐 실제 주소의 존재를 보증하지 않는다. 실제 전송을 붙인다면 서버에서도 검증해야 한다. `aria-describedby`, `aria-live`, `aria-invalid`로 보조 기술에 오류를 전달한다. 현재 폼은 실제로 메시지를 보내지 않는다.
 - **코드 근거:** `index.html`의 `#contact-form`, `label`, `aria-describedby`, `novalidate`; `js/contact.js`. 발췌 모음 E.
 - **말로 설명하기:** “입력할 때마다 각 필드를 검사해 바로 아래에 오류를 보여줍니다. 제출 때도 전체 검사를 하고 기본 전송을 막은 다음, 유효한 경우에만 데모 완료 메시지를 표시합니다.”
@@ -328,6 +328,11 @@ const validateField = (key) => {
   return '';
 };
 
+feedback.textContent = STATE.form.submitted
+  ? '제출 성공! 입력 내용을 확인했습니다. 이 데모 폼은 메시지를 실제로 전송하지 않습니다.'
+  : '';
+feedback.classList.toggle('is-success', STATE.form.submitted);
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   Object.keys(fields).forEach((key) => { STATE.form.errors[key] = validateField(key); });
@@ -336,7 +341,7 @@ form.addEventListener('submit', (event) => {
 });
 ```
 
-`validateField`는 공백을 제거한 필수값과 기본 이메일 형식을 확인한다. 실제 파일의 `input` 리스너도 같은 함수를 호출한다. `renderForm()`은 오류 문구, `aria-invalid`, 성공 안내를 상태에 맞게 갱신한다. 실패한 제출에서는 첫 오류 필드로 초점을 옮긴다.
+`validateField`는 공백을 제거한 필수값과 기본 이메일 형식을 확인한다. 실제 파일의 `input` 리스너도 같은 함수를 호출한다. 중간 두 줄은 실제 `renderForm()` 안의 코드다. `preventDefault()`는 브라우저의 기본 제출·페이지 이동을 막고, 상태를 바꾼 뒤 `renderForm()`이 성공 안내를 갱신한다. 실패한 제출에서는 첫 오류 필드로 초점을 옮긴다.
 
 ### F. CSS 변수 (`css/style.css`)
 

@@ -158,7 +158,7 @@ h1 em, h2 em { color: var(--muted); font-style: normal; }
 .field-error { min-height: 1.15em; margin: 5px 0 0; color: var(--danger); font-size: .72rem; line-height: 1.3; }
 .submit-button { width: 100%; }
 .form-feedback { min-height: 1.4em; margin: 12px 0 0; color: var(--muted); font-size: .78rem; }
-.form-feedback.success, .form-feedback.is-success { color: #4a8c19; }
+.form-feedback.is-success { padding: 12px 14px; color: #24480d; background: #e9f7d4; border: 1px solid #a2d36f; border-radius: 8px; font-weight: 700; }
 .form-feedback.error, .form-feedback.is-error { color: var(--danger); }
 
 .site-footer { padding: 38px 0; background: var(--ink); color: var(--bg); }

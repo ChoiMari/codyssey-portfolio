@@ -27,7 +27,7 @@ VS Code의 Live Server로 `index.html`을 열거나, 저장소 루트에서 `pyt
 - `IntersectionObserver` 임계값 `0.2`에서 섹션 표시
 - 다크 모드는 `localStorage`의 `portfolio-theme`에 저장
 - 브라우저의 GitHub 공개 API는 인증 없이 호출하므로 호출 제한이나 네트워크 오류 시 오류 메시지·재시도 버튼과 마지막 배포 목록을 함께 표시
-- 문의 폼은 유효성 검사 데모이며 메시지를 실제로 전송하지 않음
+- 문의 폼은 `submit`에서 `preventDefault()`를 호출하고, 유효한 입력이면 눈에 띄는 성공 메시지를 표시하는 데모이며 메시지를 실제로 전송하지 않음
 
 ## 평가항목별 설명 목차
 
